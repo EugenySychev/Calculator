@@ -30,20 +30,75 @@ Window {
             id: editText
             text: calcer.interrim_string
             font.pointSize: 40
+            focus: true
+            cursorPosition: calcer.cursorPosition
+            onCursorPositionChanged: {
+                calcer.onCursorPositionChanged(cursorPosition);
+            }
+
+            onTextChanged: {
+                cursorPosition = calcer.cursorPosition
+            }
+
+            Keys.onPressed: {
+                calcer.onPressed(event.key);
+                console.log(editText.cursorPosition);
+
+                event.accepted  = true;
+            }
         }
 
         GridLayout {
             rows: 4
             columns: 5
-            Layout.margins: 10
+//            Layout.margins: 10
+            columnSpacing: 0
+            rowSpacing: 0
 
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
+            Layout.fillHeight: true
+            Button {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: "MR"
+                onPressed: {
+                    calcer.onClick(text)
+                    console.log(editText.cursorPosition);
+                }
+            }
+            Button {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: "MC"
+                onPressed: calcer.onClick(text)
+            }
+            Button {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: "M+"
+                onPressed: calcer.onClick(text)
+            }
+            Button {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: "M-"
+                onPressed: calcer.onClick(text)
+            }
+            Button {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: ""
+                onPressed: calcer.onClick(text)
+            }
             Button {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 text: "7"
-                onPressed: calcer.onClick(text)
+                onPressed: {
+                    calcer.onClick(text)
+                    console.log(editText.cursorPosition);
+                }
             }
             Button {
                 Layout.fillWidth: true
@@ -66,7 +121,8 @@ Window {
             Button {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: ""
+                text: "("
+                onPressed: calcer.onClick(text)
             }
 
             Button {
@@ -96,7 +152,8 @@ Window {
             Button {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                text: ""
+                text: ")"
+                onPressed: calcer.onClick(text)
             }
 
             Button {
@@ -126,7 +183,7 @@ Window {
             Button {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                text: ""
+                text: "⌫"
             }
             Button {
                 Layout.fillHeight: true
@@ -155,10 +212,9 @@ Window {
             Button {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                text: ""
+                text: "C"
             }
         }
-
     }
 }
 
