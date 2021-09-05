@@ -32,6 +32,12 @@ Window {
             font.pointSize: 40
             focus: true
             cursorPosition: calcer.cursorPosition
+            Component.onCompleted: {
+                Qt.inputMethod.visibleChanged.connect(function () {
+                    if (Qt.inputMethod.visible)
+                        Qt.inputMethod.hide()
+                })
+            }
             onCursorPositionChanged: {
                 calcer.onCursorPositionChanged(cursorPosition);
             }
