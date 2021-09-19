@@ -20,6 +20,11 @@ int Calculator::getCurrentCursorPosition()
     return mCurrentCursorPosition;
 }
 
+QString Calculator::getResultString()
+{
+    return QString::number(engine.calculate());
+}
+
 void Calculator::onPressed(int event)
 {
     qDebug() << event;
@@ -82,6 +87,24 @@ void Calculator::onClick(QString str)
         mCurrentCursorPosition++;
         emit cursorPositionChanged();
         emit interrimChanged();
+    } else if (str == "+" || str == "-" || str == "/" || str == "*" ) {
+        if (mInterString.length() == 0 ||
+                (mInterString.right(1) == "+" || mInterString.right(1) == "-"
+                 || mInterString.right(1) == "/" || mInterString.right(1) == "*"))
+            mInterString = mInterString.remove(mInterString.length() - 1, 1);
+
+        mInterString += str;
+        mCurrentCursorPosition++;
+        emit cursorPositionChanged();
+        emit interrimChanged();
     }
+    engine.setExpression(mInterString);
+    emit resultStringChanged();
+
+}
+
+void Calculator::calculate()
+{
+
 }
 

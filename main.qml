@@ -19,7 +19,7 @@ Window {
             Layout.fillWidth: true
             id: resultLabel
             font.pointSize: 30
-            text: "0"
+            text: calcer.result_string
             color: "darkgrey"
             font.italic: true
         }
@@ -65,6 +65,7 @@ Window {
             Layout.fillWidth: true
             Layout.fillHeight: true
             Button {
+                Layout.maximumHeight: 3000
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 text: "MR"
@@ -74,24 +75,28 @@ Window {
                 }
             }
             Button {
+                Layout.maximumHeight: 3000
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 text: "MC"
                 onPressed: calcer.onClick(text)
             }
             Button {
+                Layout.maximumHeight: 3000
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 text: "M+"
                 onPressed: calcer.onClick(text)
             }
             Button {
+                Layout.maximumHeight: 3000
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 text: "M-"
                 onPressed: calcer.onClick(text)
             }
             Button {
+                Layout.maximumHeight: 3000
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 text: ""
