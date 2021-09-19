@@ -19,7 +19,7 @@ private:
     CalcItem *root;
     QString mExprString;
 
-    CalcItem *analyze(const QString str);
+    CalcItem *analyze(QString str);
     CalcItem*  getBySign(const QString &sourceString, QChar sign);
 };
 

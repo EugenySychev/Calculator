@@ -24,16 +24,26 @@ void CalcEngine::setExpression(QString exprString)
     root = analyze(mExprString);
 }
 
-CalcItem* CalcEngine::analyze(const QString str)
+CalcItem* CalcEngine::analyze(QString str)
 {
     bool ok = false;
     double val = str.toDouble(&ok);
     CalcItem * item = new CalcItem();
-
     if (ok)
     {
         item->value = val;
     } else {
+        // processing ()
+
+        if (str.contains('(') && str.contains(')') && str.count('(') == str.count(')'))
+        {
+            QString midstr = str.mid(str.indexOf('(') + 1, str.lastIndexOf(')') - str.indexOf('(') - 1);
+            CalcItem* intItem = analyze(midstr);
+            intItem->calc();
+            str = str.replace("("+midstr+")", QString::number(intItem->value));
+            delete intItem;
+        }
+
         item = getBySign(str, '+');
         if (item)
             return item;

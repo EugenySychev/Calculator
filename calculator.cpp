@@ -83,24 +83,34 @@ void Calculator::onClick(QString str)
         {
             mInterString.clear();
         }
-        mInterString.insert(mCurrentCursorPosition, QChar(str.at(0)));
-        mCurrentCursorPosition++;
-        emit cursorPositionChanged();
-        emit interrimChanged();
+        processAppendString(str);
     } else if (str == "+" || str == "-" || str == "/" || str == "*" ) {
         if (mInterString.length() == 0 ||
                 (mInterString.right(1) == "+" || mInterString.right(1) == "-"
                  || mInterString.right(1) == "/" || mInterString.right(1) == "*"))
             mInterString = mInterString.remove(mInterString.length() - 1, 1);
 
-        mInterString += str;
-        mCurrentCursorPosition++;
-        emit cursorPositionChanged();
-        emit interrimChanged();
+        processAppendString(str);
+    } else if (str == "(" || str == ")") {
+//        bool endsNum = false;
+//        mInterString.right(1).toInt(&endsNum);
+//        if (!endsNum)
+//        {
+
+        processAppendString(str);
+//        }
     }
     engine.setExpression(mInterString);
     emit resultStringChanged();
 
+}
+
+void Calculator::processAppendString(const QString str)
+{
+    mInterString.insert(mCurrentCursorPosition, QChar(str.at(0)));
+    mCurrentCursorPosition++;
+    emit cursorPositionChanged();
+    emit interrimChanged();
 }
 
 void Calculator::calculate()

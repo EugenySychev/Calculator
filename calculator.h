@@ -33,6 +33,7 @@ private:
     CalcEngine engine;
 
     void calculate();
+    void processAppendString(const QString str);
 };
 
 #endif // CALCULATOR_H
