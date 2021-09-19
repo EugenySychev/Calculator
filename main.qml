@@ -195,6 +195,7 @@ Window {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 text: "⌫"
+                onPressed: calcer.onClick("back")
             }
             Button {
                 Layout.fillHeight: true
@@ -224,6 +225,8 @@ Window {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 text: "C"
+                onPressed: calcer.onClick("clear")
+
             }
         }
     }

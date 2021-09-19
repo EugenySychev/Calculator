@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include "calcengine.h"
 
+#define PRECISION 12
 class Calculator : public QObject
 {
     Q_OBJECT

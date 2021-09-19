@@ -22,7 +22,7 @@ int Calculator::getCurrentCursorPosition()
 
 QString Calculator::getResultString()
 {
-    return QString::number(engine.calculate());
+    return QString::number(engine.calculate(), 'g', PRECISION);
 }
 
 void Calculator::onPressed(int event)
@@ -77,6 +77,23 @@ void Calculator::onClick(QString str)
     bool isNumber = false;
     intVal = str.toInt(&isNumber);
     qDebug() << intVal << isNumber << QChar(str.at(0)) << mCurrentCursorPosition;
+    if (str == "clear")
+    {
+        mInterString = "0";
+        mCurrentCursorPosition = 1;
+        emit cursorPositionChanged();
+        emit interrimChanged();
+    } else if (str == "back") {
+        mInterString = mInterString.left(mInterString.length() - 1);
+        mCurrentCursorPosition--;
+        if (mInterString == "")
+        {
+            mInterString = "0";
+            mCurrentCursorPosition = 1;
+        }
+        emit cursorPositionChanged();
+        emit interrimChanged();
+    }
     if (isNumber)
     {
         if (mInterString == "0")
