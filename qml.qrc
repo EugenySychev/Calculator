@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>backspace.png</file>
+        <file>calc.png</file>
     </qresource>
 </RCC>
