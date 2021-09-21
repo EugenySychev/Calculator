@@ -194,7 +194,9 @@ Window {
             Button {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                text: "⌫"
+                icon.source: "backspace.png"
+                leftPadding: 2
+                rightPadding: 2
                 onPressed: calcer.onClick("back")
             }
             Button {
