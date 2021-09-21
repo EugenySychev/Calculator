@@ -5,7 +5,7 @@ Calculator::Calculator(QObject *parent)
     : QObject(parent)
     , mInterString{"0"}
     , mCurrentCursorPosition{0}
-
+    , mMemoryIsEmpty{true}
 {
 }
 
@@ -16,7 +16,6 @@ QString Calculator::getInterString()
 
 int Calculator::getCurrentCursorPosition()
 {
-    qDebug() << "Read to qml" << mCurrentCursorPosition;
     return mCurrentCursorPosition;
 }
 
@@ -25,9 +24,13 @@ QString Calculator::getResultString()
     return QString::number(engine.calculate(), 'g', PRECISION);
 }
 
+bool Calculator::getMemoryIsEmpty()
+{
+    return mMemoryIsEmpty;
+}
+
 void Calculator::onPressed(int event)
 {
-    qDebug() << event;
     switch (event) {
     case Qt::Key_0:
     case Qt::Key_1:
@@ -67,7 +70,6 @@ void Calculator::onPressed(int event)
 
 void Calculator::onCursorPositionChanged(int position)
 {
-    qDebug() << "From Qml " << position;
     mCurrentCursorPosition = position;
 }
 
@@ -76,13 +78,10 @@ void Calculator::onClick(QString str)
     int intVal;
     bool isNumber = false;
     intVal = str.toInt(&isNumber);
-    qDebug() << intVal << isNumber << QChar(str.at(0)) << mCurrentCursorPosition;
     if (str == "clear")
     {
         mInterString = "0";
         mCurrentCursorPosition = 1;
-        emit cursorPositionChanged();
-        emit interrimChanged();
     } else if (str == "back") {
         mInterString = mInterString.left(mInterString.length() - 1);
         mCurrentCursorPosition--;
@@ -91,16 +90,21 @@ void Calculator::onClick(QString str)
             mInterString = "0";
             mCurrentCursorPosition = 1;
         }
-        emit cursorPositionChanged();
-        emit interrimChanged();
-    }
-    if (isNumber)
-    {
-        if (mInterString == "0")
-        {
-            mInterString.clear();
-        }
-        processAppendString(str);
+    } else if (str == "MR") {
+        mInterString = QString::number(mMemValue, 'g', PRECISION);
+        mCurrentCursorPosition = mInterString.length();
+    } else if (str == "M+") {
+        mMemValue += engine.calculate();
+        mMemoryIsEmpty = false;
+    } else if (str == "M-") {
+        mMemValue += engine.calculate();
+        mMemoryIsEmpty = false;
+    } else if (str == "MC") {
+        mMemValue = 0;
+        mMemoryIsEmpty = true;
+    } else if (str == "=") {
+        mInterString = QString::number(engine.calculate(), 'g', PRECISION);
+        mCurrentCursorPosition = mInterString.length();
     } else if (str == "+" || str == "-" || str == "/" || str == "*" ) {
         if (mInterString.length() == 0 ||
                 (mInterString.right(1) == "+" || mInterString.right(1) == "-"
@@ -109,24 +113,31 @@ void Calculator::onClick(QString str)
 
         processAppendString(str);
     } else if (str == "(" || str == ")") {
-//        bool endsNum = false;
-//        mInterString.right(1).toInt(&endsNum);
-//        if (!endsNum)
-//        {
+        QString lst = mInterString.right(1);
+        if ((str == "(" && (lst == "+" || lst == "-" || lst == "/" || lst == "*")) ||
+                (str == ")" && !(lst == "+" || lst == "-" || lst == "/" || lst == "*")))
+            processAppendString(str);
 
-        processAppendString(str);
-//        }
+    } else {
+
+        if (isNumber)
+        {
+            if (mInterString == "0")
+            {
+                mInterString.clear();
+            }
+            processAppendString(str);
+        }
     }
+    emit interrimChanged();
     engine.setExpression(mInterString);
     emit resultStringChanged();
 
 }
-
 void Calculator::processAppendString(const QString str)
 {
     mInterString.insert(mCurrentCursorPosition, QChar(str.at(0)));
     mCurrentCursorPosition++;
-    emit cursorPositionChanged();
     emit interrimChanged();
 }
 

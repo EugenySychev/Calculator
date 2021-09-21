@@ -78,7 +78,6 @@ CalcItem* CalcEngine::getBySign(const QString& sourceString, QChar sign)
     }
     if (!left.isEmpty() && !right.isEmpty() && sign != 0)
     {
-        qDebug() << "Found " << sign << " for " << left << " and " << right;
         item = new CalcItem;
         item->lex = sign;
         item->left = analyze(left);

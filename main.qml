@@ -14,15 +14,30 @@ Window {
         Layout.fillHeight: true
         Layout.fillWidth: true
 
-        Label {
-            Layout.margins: 10
+        RowLayout {
+
+            Layout.fillHeight: true
             Layout.fillWidth: true
-            id: resultLabel
-            font.pointSize: 30
-            text: calcer.result_string
-            color: "darkgrey"
-            font.italic: true
+
+            Label {
+                Layout.margins: 10
+                Layout.fillWidth: true
+                id: resultLabel
+                font.pointSize: 30
+                text: calcer.result_string
+                color: "darkgrey"
+                font.italic: true
+            }
+            Label {
+                Layout.alignment: Qt.AlignRight
+                text: "M"
+                font.pointSize: 30
+                Layout.margins: 10
+                color: calcer.memory_is_empty ? "lightgrey" : "black"
+            }
         }
+
+
         TextEdit {
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -48,8 +63,6 @@ Window {
 
             Keys.onPressed: {
                 calcer.onPressed(event.key);
-                console.log(editText.cursorPosition);
-
                 event.accepted  = true;
             }
         }
@@ -69,10 +82,7 @@ Window {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 text: "MR"
-                onPressed: {
-                    calcer.onClick(text)
-                    console.log(editText.cursorPosition);
-                }
+                onPressed: calcer.onClick(text)
             }
             Button {
                 Layout.maximumHeight: 3000
@@ -108,7 +118,6 @@ Window {
                 text: "7"
                 onPressed: {
                     calcer.onClick(text)
-                    console.log(editText.cursorPosition);
                 }
             }
             Button {
