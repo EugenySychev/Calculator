@@ -63,13 +63,14 @@ Window {
 
             Keys.onPressed: {
                 calcer.onPressed(event.key);
-                event.accepted  = true;
+                if (event.key !== Qt.Key_Back)
+                    event.accepted  = true;
             }
         }
 
         GridLayout {
-            rows: 4
-            columns: 5
+            rows: 5
+            columns: 4
 //            Layout.margins: 10
             columnSpacing: 0
             rowSpacing: 0
@@ -106,11 +107,32 @@ Window {
                 onPressed: calcer.onClick(text)
             }
             Button {
-                Layout.maximumHeight: 3000
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                text: "C"
+                onPressed: calcer.onClick("clear")
+
+            }
+            Button {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: ""
+                text: "("
                 onPressed: calcer.onClick(text)
+            }
+
+            Button {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                text: ")"
+                onPressed: calcer.onClick(text)
+            }
+            Button {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                icon.source: "backspace.png"
+                leftPadding: 2
+                rightPadding: 2
+                onPressed: calcer.onClick("back")
             }
             Button {
                 Layout.fillWidth: true
@@ -133,18 +155,11 @@ Window {
                 onPressed: calcer.onClick(text)
             }
             Button {
-                Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: "/"
+                Layout.fillWidth: true
+                text: "*"
                 onPressed: calcer.onClick(text)
             }
-            Button {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                text: "("
-                onPressed: calcer.onClick(text)
-            }
-
             Button {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
@@ -163,19 +178,13 @@ Window {
                 text: "6"
                 onPressed: calcer.onClick(text)
             }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                text: "*"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                text: ")"
-                onPressed: calcer.onClick(text)
-            }
 
+            Button {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: "/"
+                onPressed: calcer.onClick(text)
+            }
             Button {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
@@ -203,10 +212,8 @@ Window {
             Button {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                icon.source: "backspace.png"
-                leftPadding: 2
-                rightPadding: 2
-                onPressed: calcer.onClick("back")
+                text: "="
+                onPressed: calcer.onClick(text)
             }
             Button {
                 Layout.fillHeight: true
@@ -223,21 +230,8 @@ Window {
             Button {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                text: "="
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
                 text: "-"
                 onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                text: "C"
-                onPressed: calcer.onClick("clear")
-
             }
         }
     }

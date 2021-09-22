@@ -117,9 +117,16 @@ void Calculator::onClick(QString str)
         if ((str == "(" && (lst == "+" || lst == "-" || lst == "/" || lst == "*")) ||
                 (str == ")" && !(lst == "+" || lst == "-" || lst == "/" || lst == "*")))
             processAppendString(str);
+    } else if (str == ",") {
+        QString lst = mInterString.right(1);
+        if (lst[0].isDigit())
+        {
+            const QLocale & cLocale = QLocale::c();
+            str = cLocale.decimalPoint();
+            processAppendString(str);
 
+        }
     } else {
-
         if (isNumber)
         {
             if (mInterString == "0")
