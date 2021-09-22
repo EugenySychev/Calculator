@@ -6,6 +6,7 @@ Calculator::Calculator(QObject *parent)
     , mInterString{"0"}
     , mCurrentCursorPosition{0}
     , mMemoryIsEmpty{true}
+    , mMemValue{0}
 {
 }
 
@@ -83,7 +84,7 @@ void Calculator::onClick(QString str)
         mInterString = "0";
         mCurrentCursorPosition = 1;
     } else if (str == "back") {
-        mInterString = mInterString.left(mInterString.length() - 1);
+        mInterString = mInterString.left(mCurrentCursorPosition - 1) + mInterString.mid(mCurrentCursorPosition);
         mCurrentCursorPosition--;
         if (mInterString == "")
         {
@@ -123,6 +124,7 @@ void Calculator::onClick(QString str)
         {
             const QLocale & cLocale = QLocale::c();
             str = cLocale.decimalPoint();
+            qDebug() << "Point is " << str;
             processAppendString(str);
 
         }

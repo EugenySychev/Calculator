@@ -71,7 +71,7 @@ Window {
         GridLayout {
             rows: 5
             columns: 4
-//            Layout.margins: 10
+            //            Layout.margins: 10
             columnSpacing: 0
             rowSpacing: 0
 
@@ -110,6 +110,8 @@ Window {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 text: "C"
+                palette.buttonText: "#CC0000"
+
                 onPressed: calcer.onClick("clear")
 
             }
@@ -212,6 +214,10 @@ Window {
             Button {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                background: Rectangle {
+                    color:  "#CCCCFF"
+                }
+
                 text: "="
                 onPressed: calcer.onClick(text)
             }
