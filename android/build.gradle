@@ -36,7 +36,7 @@ android {
 
     compileSdkVersion androidCompileSdkVersion.toInteger()
 
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '28.0.3'
 
     sourceSets {
         main {
@@ -71,7 +71,7 @@ android {
 
     defaultConfig {
         resConfig "en"
-        minSdkVersion = 30
+        minSdkVersion = qtMinSdkVersion
         targetSdkVersion = 30
     }
 }
