@@ -4,27 +4,32 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
 ApplicationWindow {
+    id: appWindow
     width: 640
     height: 480
     visible: true
     title: qsTr("Calculator")
 
-//    header: ToolBar {
-//        RowLayout {
-//            anchors.fill: parent
-//            Label {
-//                Layout.leftMargin: 10
-//                text: "Calculator"
-//            }
+    header: ToolBar {
+        RowLayout {
+            anchors.fill: parent
+            Label {
+                Layout.leftMargin: 10
+                text: "Calculator"
+            }
 
-//            ComboBox {
-//                Layout.rightMargin: 10
+            ComboBox {
+                Layout.rightMargin: 10
+                Layout.leftMargin: width / 10
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignRight
 
-//                Layout.alignment: Qt.AlignRight
-//                model: ["Simple", "Programmers"]
-//            }
-//        }
-//    }
+                model: ["Simple", "Programmers"]
+            }
+        }
+    }
+
+
     ColumnLayout {
         anchors.fill: parent
         Layout.fillHeight: true
@@ -78,196 +83,377 @@ ApplicationWindow {
                     event.accepted  = true;
             }
         }
+        RowLayout {
+            spacing: 0
+            GridLayout {
+                rows: 6
+                columns: 4
+                columnSpacing: 0
+                rowSpacing: 0
+                visible: appWindow.height < appWindow.width
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
-        GridLayout {
-            rows: 5
-            columns: 4
-            //            Layout.margins: 10
-            columnSpacing: 0
-            rowSpacing: 0
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
 
-            Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Button {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                font.pixelSize: height / 3
-                text: "MR"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                font.pixelSize: height / 3
-                text: "MC"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                font.pixelSize: height / 3
-                text: "M+"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                font.pixelSize: height / 3
-                text: "M-"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                text: "C"
-                palette.buttonText: "#CC0000"
-                font.pixelSize: height / 3
-                onPressed: calcer.onClick("clear")
-
-            }
-            Button {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                font.pixelSize: height / 3
-                text: "("
-                onPressed: calcer.onClick(text)
-            }
-
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: ")"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                icon.source: "backspace.png"
-
-                onPressed: calcer.onClick("back")
-            }
-            Button {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                text: "7"
-                font.pixelSize: height / 3
-                onPressed: {
-                    calcer.onClick(text)
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "O"
+                    onPressed: calcer.onClick(text)
                 }
             }
-            Button {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                font.pixelSize: height / 3
-                text: "8"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                font.pixelSize: height / 3
-                text: "9"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: "*"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: "4"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: "5"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: "6"
-                onPressed: calcer.onClick(text)
-            }
+            GridLayout {
+                rows: 6
+                columns: 4
+                columnSpacing: 0
+                rowSpacing: 0
 
-            Button {
+                Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                font.pixelSize: height / 3
-                text: "/"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: "1"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: "2"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: "3"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: "+"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                background: Rectangle {
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "MR"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "MC"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "M+"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "M-"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    color:  "#CCCCFF"
+                    text: "C"
+                    palette.buttonText: "#CC0000"
+                    font.pixelSize: height / 3
+                    onPressed: calcer.onClick("clear")
+
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "("
+                    onPressed: calcer.onClick(text)
                 }
 
-                text: "="
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: "0"
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: ","
-                onPressed: calcer.onClick(text)
-            }
-            Button {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                font.pixelSize: height / 3
-                text: "-"
-                onPressed: calcer.onClick(text)
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: ")"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    icon.source: "backspace.png"
+
+                    onPressed: calcer.onClick("back")
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    text: "7"
+                    font.pixelSize: height / 3
+                    onPressed: {
+                        calcer.onClick(text)
+                    }
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "8"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "9"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: "*"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: "4"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: "5"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: "6"
+                    onPressed: calcer.onClick(text)
+                }
+
+                Button {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    font.pixelSize: height / 3
+                    text: "/"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: "1"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: "2"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: "3"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: "+"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    background: Rectangle {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        color:  "#CCCCFF"
+                    }
+
+                    text: "="
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: "0"
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: ","
+                    onPressed: calcer.onClick(text)
+                }
+                Button {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    font.pixelSize: height / 3
+                    text: "-"
+                    onPressed: calcer.onClick(text)
+                }
             }
         }
     }
