@@ -7,6 +7,7 @@ Calculator::Calculator(QObject *parent)
     , mCurrentCursorPosition{0}
     , mMemoryIsEmpty{true}
     , mMemValue{0}
+    , mDegRadMode{false}
 {
 }
 
@@ -28,6 +29,11 @@ QString Calculator::getResultString()
 bool Calculator::getMemoryIsEmpty()
 {
     return mMemoryIsEmpty;
+}
+
+QString Calculator::getDegRadMode()
+{
+    return mDegRadMode ? "Deg" : "Rad";
 }
 
 void Calculator::onPressed(int event)
@@ -128,6 +134,11 @@ void Calculator::onClick(QString str)
             processAppendString(str);
 
         }
+    } else if (str == "Deg" || str == "Rad") {
+        mDegRadMode = !mDegRadMode;
+        engine.setDegRadMode(mDegRadMode);
+        emit degRadModeChanged();
+//    } else if (str == )
     } else {
         if (isNumber)
         {
@@ -135,8 +146,9 @@ void Calculator::onClick(QString str)
             {
                 mInterString.clear();
             }
-            processAppendString(str);
         }
+            processAppendString(str);
+
     }
     emit interrimChanged();
     engine.setExpression(mInterString);
@@ -145,7 +157,7 @@ void Calculator::onClick(QString str)
 }
 void Calculator::processAppendString(const QString str)
 {
-    mInterString.insert(mCurrentCursorPosition, QChar(str.at(0)));
+    mInterString.insert(mCurrentCursorPosition, str);
     mCurrentCursorPosition++;
     emit interrimChanged();
 }

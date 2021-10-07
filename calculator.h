@@ -15,6 +15,7 @@ public:
     Q_PROPERTY(int cursorPosition READ getCurrentCursorPosition WRITE onCursorPositionChanged NOTIFY interrimChanged)
     Q_PROPERTY(QString result_string READ getResultString NOTIFY resultStringChanged)
     Q_PROPERTY(bool memory_is_empty READ getMemoryIsEmpty NOTIFY interrimChanged)
+    Q_PROPERTY(QString degRadMode READ getDegRadMode NOTIFY degRadModeChanged)
     explicit Calculator(QObject *parent = nullptr);
 
 
@@ -22,6 +23,7 @@ public:
     int getCurrentCursorPosition();
     QString getResultString();
     bool getMemoryIsEmpty();
+    QString getDegRadMode();
 
 public slots:
     void onClick(QString str);
@@ -33,6 +35,7 @@ signals:
     void cursorPositionChanged();
     void resultStringChanged();
     void memoryChanged();
+    void degRadModeChanged();
 
 private:
     QString mInterString;
@@ -40,6 +43,7 @@ private:
     CalcEngine engine;
     bool mMemoryIsEmpty;
     double mMemValue;
+    bool mDegRadMode;
 
     void calculate();
     void processAppendString(const QString str);

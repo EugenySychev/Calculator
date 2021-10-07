@@ -4,6 +4,7 @@
 
 CalcEngine::CalcEngine()
     : root{nullptr}
+    , mDegRadMode{false}
 {
 
 }
@@ -16,6 +17,11 @@ double CalcEngine::calculate()
         return root->value;
     }
     return 0;
+}
+
+void CalcEngine::setDegRadMode(bool degRadMode)
+{
+
 }
 
 void CalcEngine::setExpression(QString exprString)
@@ -34,16 +40,34 @@ CalcItem* CalcEngine::analyze(QString str)
         item->value = val;
     } else {
         // processing ()
-
-        if (str.contains('(') && str.contains(')') && str.count('(') == str.count(')'))
+        qDebug() << "Analyze " << str;
+        while (str.contains('(') && str.contains(')'))
         {
-            QString midstr = str.mid(str.indexOf('(') + 1, str.lastIndexOf(')') - str.indexOf('(') - 1);
+            int first = str.indexOf('(');
+            int second = str.indexOf(')', first + 1);
+            QString midstr = str.mid(first + 1, second - first - 1);
+            qDebug() << str << midstr << first << second;
+
             CalcItem* intItem = analyze(midstr);
             intItem->calc();
             str = str.replace("("+midstr+")", QString::number(intItem->value));
             delete intItem;
+            qDebug() << str;
         }
 
+        while (str.contains('|') && str.count('|') > 1)
+        {
+            int first = str.indexOf('|');
+            QString midstr = str.mid(first + 1, str.indexOf('|', first + 1) - first - 1);
+            CalcItem* intItem = analyze(midstr);
+            intItem->calc();
+            str = str.replace("|"+midstr+"|", QString::number(abs(intItem->value)));
+            qDebug() << str;
+            delete intItem;
+        }
+        if (str.contains("sin")) {
+
+        }
         item = getBySign(str, '+');
         if (item)
             return item;
@@ -70,7 +94,7 @@ CalcItem* CalcEngine::getBySign(const QString& sourceString, QChar sign)
 {
     CalcItem * item{nullptr};
     QString left, right;
-    int i = sourceString.indexOf(sign);
+    int i = sourceString.lastIndexOf(sign);
     if (i != -1)
     {
         left = sourceString.left(i);

@@ -15,10 +15,11 @@ public:
 
     void setExpression(QString exprString);
 
+    void setDegRadMode(bool degRadMode);
 private:
     CalcItem *root;
     QString mExprString;
-
+    bool mDegRadMode;
     CalcItem *analyze(QString str);
     CalcItem*  getBySign(const QString &sourceString, QChar sign);
 };
