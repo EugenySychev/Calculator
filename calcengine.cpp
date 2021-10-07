@@ -40,19 +40,15 @@ CalcItem* CalcEngine::analyze(QString str)
         item->value = val;
     } else {
         // processing ()
-        qDebug() << "Analyze " << str;
         while (str.contains('(') && str.contains(')'))
         {
             int first = str.indexOf('(');
             int second = str.indexOf(')', first + 1);
             QString midstr = str.mid(first + 1, second - first - 1);
-            qDebug() << str << midstr << first << second;
-
             CalcItem* intItem = analyze(midstr);
             intItem->calc();
             str = str.replace("("+midstr+")", QString::number(intItem->value));
             delete intItem;
-            qDebug() << str;
         }
 
         while (str.contains('|') && str.count('|') > 1)

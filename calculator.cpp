@@ -120,9 +120,11 @@ void Calculator::onClick(QString str)
 
         processAppendString(str);
     } else if (str == "(" || str == ")") {
+        checkFirstInput();
         QString lst = mInterString.right(1);
-        if ((str == "(" && (lst == "+" || lst == "-" || lst == "/" || lst == "*")) ||
+        if (((str == "(" && (lst == "+" || lst == "-" || lst == "/" || lst == "*")) ||
                 (str == ")" && !(lst == "+" || lst == "-" || lst == "/" || lst == "*")))
+                || (mInterString.isEmpty() && str == "("))
             processAppendString(str);
     } else if (str == ",") {
         QString lst = mInterString.right(1);
@@ -138,16 +140,13 @@ void Calculator::onClick(QString str)
         mDegRadMode = !mDegRadMode;
         engine.setDegRadMode(mDegRadMode);
         emit degRadModeChanged();
-//    } else if (str == )
+        //    } else if (str == )
     } else {
-        if (isNumber)
+        if (isNumber || str == "|")
         {
-            if (mInterString == "0")
-            {
-                mInterString.clear();
-            }
+            checkFirstInput();
         }
-            processAppendString(str);
+        processAppendString(str);
 
     }
     emit interrimChanged();
@@ -160,6 +159,14 @@ void Calculator::processAppendString(const QString str)
     mInterString.insert(mCurrentCursorPosition, str);
     mCurrentCursorPosition++;
     emit interrimChanged();
+}
+
+void Calculator::checkFirstInput()
+{
+    if (mInterString == "0")
+    {
+        mInterString.clear();
+    }
 }
 
 void Calculator::calculate()

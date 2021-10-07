@@ -47,6 +47,7 @@ private:
 
     void calculate();
     void processAppendString(const QString str);
+    void checkFirstInput();
 };
 
 #endif // CALCULATOR_H
