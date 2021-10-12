@@ -61,8 +61,11 @@ CalcItem* CalcEngine::analyze(QString str)
             qDebug() << str;
             delete intItem;
         }
-        if (str.contains("sin")) {
-
+        if (str.contains("π")) {
+            return analyze(str.replace("π", QString::number(M_PI)));
+        }
+        if (str.contains("e")) {
+            return analyze(str.replace("e", QString::number(M_E)));
         }
         item = getBySign(str, '+');
         if (item)

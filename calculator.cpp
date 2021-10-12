@@ -142,10 +142,10 @@ void Calculator::onClick(QString str)
         emit degRadModeChanged();
         //    } else if (str == )
     } else {
-        if (isNumber || str == "|")
-        {
+//        if (isNumber || str == "|" || str == "e" || str == "π")
+//        {
             checkFirstInput();
-        }
+//        }
         processAppendString(str);
 
     }
@@ -157,7 +157,7 @@ void Calculator::onClick(QString str)
 void Calculator::processAppendString(const QString str)
 {
     mInterString.insert(mCurrentCursorPosition, str);
-    mCurrentCursorPosition++;
+    mCurrentCursorPosition+=str.length();
     emit interrimChanged();
 }
 
