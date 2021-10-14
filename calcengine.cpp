@@ -40,6 +40,12 @@ CalcItem* CalcEngine::analyze(QString str)
         item->value = val;
     } else {
         // processing ()
+
+
+        while (str.contains("sin(") && str.contains(")"))
+        {
+//            int first = str.indexOf("sin(")
+        }
         while (str.contains('(') && str.contains(')'))
         {
             int first = str.indexOf('(');
@@ -87,6 +93,22 @@ CalcItem* CalcEngine::analyze(QString str)
         }
     }
     return item;
+}
+
+QString CalcEngine::processExpression(QString expr, QString str)
+{
+    int first = str.indexOf(expr) + expr.length();
+    int second = str.indexOf(")", first);
+    QString midstr = str.mid(first + 1, second - first - 1);
+    CalcItem* intItem = analyze(midstr);
+    intItem->calc();
+    str = str.replace(expr+midstr+")", QString::number(getValueExpr(expr, intItem)));
+    delete intItem;
+}
+
+double CalcEngine::getValueExpr(QString expr, CalcItem* item)
+{
+
 }
 
 CalcItem* CalcEngine::getBySign(const QString& sourceString, QChar sign)
