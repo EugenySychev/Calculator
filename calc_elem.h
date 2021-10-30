@@ -5,12 +5,12 @@
 #include <qmath.h>
 
 struct CalcItem {
-    QString lex;
-    double value = 0.0;
-    bool known = false;
-    CalcItem* left;
-    CalcItem* right;
-    bool isGrad;
+    QString lex{};
+    double value{0.0};
+    bool known{false};
+    CalcItem* left{nullptr};
+    CalcItem* right{nullptr};
+    bool isGrad{false};
 
     void calc() {
         if (left)
@@ -20,20 +20,25 @@ struct CalcItem {
             if (!right->known)
                 right->calc();
 
-        if (left && right)
+        if (left)
         {
-            if (lex == "*")
-            {
-                value = left->value * right->value;
-            } else if (lex == "/") {
-                value = left->value / right->value;
-            } else if (lex == "+") {
-                value = left->value + right->value;
-            } else if (lex == "-") {
-                value = left->value - right->value;
-            } else if (lex == "mod") {
-                value = (int)left->value % (int)right->value;
-            } else if (lex == "sin") {
+            if (lex.contains("("))
+                lex.remove("(");
+            if (right) {
+                if (lex == "*")
+                {
+                    value = left->value * right->value;
+                } else if (lex == "/") {
+                    value = left->value / right->value;
+                } else if (lex == "+") {
+                    value = left->value + right->value;
+                } else if (lex == "-") {
+                    value = left->value - right->value;
+                } else if (lex == "mod") {
+                    value = (int)left->value % (int)right->value;
+                } }
+
+            if (lex == "sin") {
                 value = qSin(isGrad? qDegreesToRadians(left->value) : left->value);
             } else if (lex == "cos") {
                 value = qCos(isGrad? qDegreesToRadians(left->value) : left->value);
@@ -45,6 +50,10 @@ struct CalcItem {
                 value = qAcos(isGrad? qDegreesToRadians(left->value) : left->value);
             } else if (lex == "atan") {
                 value = qAtan(isGrad? qDegreesToRadians(left->value) : left->value);
+            } else if (lex == "log") {
+                value = log10(left->value);
+            } else if (lex == "ln") {
+                value = log(left->value);
             } else if (lex == "!") {
                 double res = 0;
                 if (left->value == 0)

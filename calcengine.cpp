@@ -34,29 +34,34 @@ CalcItem* CalcEngine::analyze(QString str)
 {
     bool ok = false;
     double val = str.toDouble(&ok);
-    CalcItem * item = new CalcItem();
+    CalcItem * item{nullptr};
     if (ok)
     {
+        item = new CalcItem();
         item->value = val;
+        item->known = true;
     } else {
         // processing ()
-
-
-        while (str.contains("sin(") && str.contains(")"))
+        if (processExpression("sin(", str))
         {
-//            int first = str.indexOf("sin(")
+            qDebug() << "Sin replaced " << str;
+            return analyze(str);
+        } else if (processExpression("cos(", str)) {
+
+            qDebug() << "cos replaced " << str;
+            return analyze(str);
+        } else if (processExpression("tan(", str)) {
+            return analyze(str);
         }
+
+
+
         while (str.contains('(') && str.contains(')'))
         {
-            int first = str.indexOf('(');
-            int second = str.indexOf(')', first + 1);
-            QString midstr = str.mid(first + 1, second - first - 1);
-            CalcItem* intItem = analyze(midstr);
-            intItem->calc();
-            str = str.replace("("+midstr+")", QString::number(intItem->value));
-            delete intItem;
+            processExpression("(", str);
         }
-
+        item = new CalcItem();
+        item->isGrad = mDegRadMode;
         while (str.contains('|') && str.count('|') > 1)
         {
             int first = str.indexOf('|');
@@ -68,10 +73,10 @@ CalcItem* CalcEngine::analyze(QString str)
             delete intItem;
         }
         if (str.contains("π")) {
-            return analyze(str.replace("π", QString::number(M_PI)));
+            return analyze(str.replace("π", QString::number(M_PI, 'g', PRECISION)));
         }
         if (str.contains("e")) {
-            return analyze(str.replace("e", QString::number(M_E)));
+            return analyze(str.replace("e", QString::number(M_E, 'g', PRECISION)));
         }
         item = getBySign(str, '+');
         if (item)
@@ -95,20 +100,41 @@ CalcItem* CalcEngine::analyze(QString str)
     return item;
 }
 
-QString CalcEngine::processExpression(QString expr, QString str)
+bool CalcEngine::processExpression(const QString expr, QString& str)
 {
-    int first = str.indexOf(expr) + expr.length();
+    int first = str.indexOf(expr);
+    if (first == -1)
+        return false;
+    first += expr.length();
+
     int second = str.indexOf(")", first);
-    QString midstr = str.mid(first + 1, second - first - 1);
-    CalcItem* intItem = analyze(midstr);
+    if (second == -1)
+        return false;
+    qDebug() << "CHeck " << str << " for " << expr << " res = " << first << " and " << second;
+
+    QString midstr = str.mid(first, second - first);
+    CalcItem* intItem = getByExpr(midstr, expr);
+    intItem->isGrad = mDegRadMode;
     intItem->calc();
-    str = str.replace(expr+midstr+")", QString::number(getValueExpr(expr, intItem)));
+    qDebug() << "Replaced " << expr+midstr+")";
+    str = str.replace(expr+midstr+")", QString::number(intItem->value, 'g', PRECISION));
+    qDebug() << " to " << QString::number(intItem->value, 'g', PRECISION);
     delete intItem;
+    return true;
+
 }
 
-double CalcEngine::getValueExpr(QString expr, CalcItem* item)
+CalcItem* CalcEngine::getByExpr(QString source, QString expr)
 {
+    CalcItem* item{nullptr};
+    if (!source.isEmpty()) {
+        item = new CalcItem;
+        item->isGrad = mDegRadMode;
+        item->lex = expr;
+        item->left = analyze(source);
+    }
 
+    return item;
 }
 
 CalcItem* CalcEngine::getBySign(const QString& sourceString, QChar sign)
@@ -124,6 +150,7 @@ CalcItem* CalcEngine::getBySign(const QString& sourceString, QChar sign)
     if (!left.isEmpty() && !right.isEmpty() && sign != 0)
     {
         item = new CalcItem;
+        item->isGrad = mDegRadMode;
         item->lex = sign;
         item->left = analyze(left);
         item->right = analyze(right);

@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QDebug>
 #include "calc_elem.h"
+#define PRECISION 12
 
 class CalcEngine
 {
@@ -22,8 +23,8 @@ private:
     bool mDegRadMode;
     CalcItem *analyze(QString str);
     CalcItem*  getBySign(const QString &sourceString, QChar sign);
-    QString processExpression(QString expr, QString str);
-    double getValueExpr(QString expr, CalcItem *item);
+    bool processExpression(const QString expr, QString &str);
+    CalcItem* getByExpr(QString source, QString expr);
 };
 
 #endif // CALCENGINE_H
