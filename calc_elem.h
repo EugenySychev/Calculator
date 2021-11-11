@@ -36,7 +36,10 @@ struct CalcItem {
                     value = left->value - right->value;
                 } else if (lex == "mod") {
                     value = (int)left->value % (int)right->value;
-                } }
+                } else if (lex == "^") {
+                    value = pow(left->value, right->value);
+                }
+            }
 
             if (lex == "sin") {
                 value = qSin(isGrad? qDegreesToRadians(left->value) : left->value);
@@ -54,6 +57,8 @@ struct CalcItem {
                 value = log10(left->value);
             } else if (lex == "ln") {
                 value = log(left->value);
+            } else if (lex == "√") {
+                value = sqrt(left->value);
             } else if (lex == "!") {
                 double res = 0;
                 if (left->value == 0)
@@ -69,6 +74,7 @@ struct CalcItem {
         known = true;
     }
 };
+
 
 
 #endif // CALC_ELEM_H

@@ -21,7 +21,7 @@ double CalcEngine::calculate()
 
 void CalcEngine::setDegRadMode(bool degRadMode)
 {
-
+    mDegRadMode = degRadMode;
 }
 
 void CalcEngine::setExpression(QString exprString)
@@ -42,13 +42,25 @@ CalcItem* CalcEngine::analyze(QString str)
         item->known = true;
     } else {
         // processing ()
+        if (processExpression("log(", str)) {
+            return analyze(str);
+        } else if (processExpression("ln(", str)) {
+            return analyze(str);
+        } else if (processExpression("√(", str)) {
+            return analyze(str);
+        }
+
+        if (processExpression("asin(", str)) {
+            return analyze(str);
+        } else if (processExpression("acos(", str)) {
+            return analyze(str);
+        } else if (processExpression("atan(", str)) {
+            return analyze(str);
+        }
         if (processExpression("sin(", str))
         {
-            qDebug() << "Sin replaced " << str;
             return analyze(str);
         } else if (processExpression("cos(", str)) {
-
-            qDebug() << "cos replaced " << str;
             return analyze(str);
         } else if (processExpression("tan(", str)) {
             return analyze(str);
@@ -60,8 +72,6 @@ CalcItem* CalcEngine::analyze(QString str)
         {
             processExpression("(", str);
         }
-        item = new CalcItem();
-        item->isGrad = mDegRadMode;
         while (str.contains('|') && str.count('|') > 1)
         {
             int first = str.indexOf('|');
@@ -73,11 +83,12 @@ CalcItem* CalcEngine::analyze(QString str)
             delete intItem;
         }
         if (str.contains("π")) {
-            return analyze(str.replace("π", QString::number(M_PI, 'g', PRECISION)));
+            return analyze(str.replace("π", QString::number(M_PI, 'f', PRECISION)));
         }
         if (str.contains("e")) {
-            return analyze(str.replace("e", QString::number(M_E, 'g', PRECISION)));
+            return analyze(str.replace("e", QString::number(M_E, 'f', PRECISION)));
         }
+
         item = getBySign(str, '+');
         if (item)
             return item;
@@ -93,6 +104,13 @@ CalcItem* CalcEngine::analyze(QString str)
                     item = getBySign(str, '/');
                     if (item)
                         return item;
+                    else {
+                        item = getBySign(str, '^');
+                        if (item)
+                            return item;
+                        else
+                            qDebug() << "Unknown operator ";
+                    }
                 }
             }
         }
@@ -117,8 +135,8 @@ bool CalcEngine::processExpression(const QString expr, QString& str)
     intItem->isGrad = mDegRadMode;
     intItem->calc();
     qDebug() << "Replaced " << expr+midstr+")";
-    str = str.replace(expr+midstr+")", QString::number(intItem->value, 'g', PRECISION));
-    qDebug() << " to " << QString::number(intItem->value, 'g', PRECISION);
+    str = str.replace(expr+midstr+")", QString::number(intItem->value, 'fs', PRECISION));
+    qDebug() << " to " << QString::number(intItem->value, 'f', PRECISION);
     delete intItem;
     return true;
 

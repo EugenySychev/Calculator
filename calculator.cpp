@@ -1,4 +1,5 @@
 #include "calculator.h"
+#include "calculator.h"
 #include <QDebug>
 
 Calculator::Calculator(QObject *parent)
@@ -21,9 +22,16 @@ int Calculator::getCurrentCursorPosition()
     return mCurrentCursorPosition;
 }
 
+QString Calculator::cropPrecision(QString res)
+{
+    while (res.right(1) == "0") res.remove(res.length() - 1, 1);
+    if (res.right(1) == ".") res.remove(res.length() - 1, 1);
+    return res;
+}
+
 QString Calculator::getResultString()
 {
-    return QString::number(engine.calculate(), 'g', PRECISION);
+    return cropPrecision(QString::number(engine.calculate(), 'f', PRECISION));
 }
 
 bool Calculator::getMemoryIsEmpty()
@@ -98,7 +106,7 @@ void Calculator::onClick(QString str)
             mCurrentCursorPosition = 1;
         }
     } else if (str == "MR") {
-        mInterString = QString::number(mMemValue, 'g', PRECISION);
+        mInterString = QString::number(mMemValue, 'f', PRECISION);
         mCurrentCursorPosition = mInterString.length();
     } else if (str == "M+") {
         mMemValue += engine.calculate();
@@ -110,7 +118,7 @@ void Calculator::onClick(QString str)
         mMemValue = 0;
         mMemoryIsEmpty = true;
     } else if (str == "=") {
-        mInterString = QString::number(engine.calculate(), 'g', PRECISION);
+        mInterString = cropPrecision(QString::number(engine.calculate(), 'f', PRECISION));
         mCurrentCursorPosition = mInterString.length();
     } else if (str == "+" || str == "-" || str == "/" || str == "*" ) {
         if (mInterString.length() == 0 ||
@@ -139,6 +147,7 @@ void Calculator::onClick(QString str)
     } else if (str == "Deg" || str == "Rad") {
         mDegRadMode = !mDegRadMode;
         engine.setDegRadMode(mDegRadMode);
+
         emit degRadModeChanged();
         //    } else if (str == )
     } else {

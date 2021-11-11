@@ -47,6 +47,8 @@ private:
     void calculate();
     void processAppendString(const QString str);
     void checkFirstInput();
+    QString cropPrecision(QString res);
+
 };
 
 #endif // CALCULATOR_H
