@@ -33,15 +33,21 @@ void CalcEngine::setExpression(QString exprString)
 CalcItem* CalcEngine::analyze(QString str)
 {
     bool ok = false;
-    double val = str.toDouble(&ok);
+    bool isPerc = str.endsWith("%");
+    double val = str.left(str.length() - (isPerc ? 1 : 0)).toDouble(&ok);
     CalcItem * item{nullptr};
     if (ok)
     {
         item = new CalcItem();
         item->value = val;
         item->known = true;
+        item->isPerc = isPerc;
     } else {
         // processing ()
+        if (processPostOperator("!", str)) {
+            return analyze(str);
+        }
+
         if (processExpression("log(", str)) {
             return analyze(str);
         } else if (processExpression("ln(", str)) {
@@ -118,6 +124,28 @@ CalcItem* CalcEngine::analyze(QString str)
     return item;
 }
 
+bool CalcEngine::processPostOperator(const QString op, QString& str)
+{
+    int second = str.indexOf(op);
+    if (second < 0 )
+        return false;
+    int first = second - 1;
+    while ( first >= 0 && (str.mid(first, 1).at(0).isDigit() || str.mid(first, 1).at(0) == "."))
+        first--;
+    //first++; //step back to one
+    QString midstr = str.mid(first, second - first);
+
+    CalcItem* intItem = getByExpr(midstr, op);
+    intItem->isGrad = mDegRadMode;
+    intItem->calc();
+    qDebug() << "Replaced " << midstr + op ;
+    str = str.replace(midstr+op, QString::number(intItem->value, 'f', PRECISION));
+    qDebug() << " to " << QString::number(intItem->value, 'f', PRECISION);
+    delete intItem;
+    return true;
+
+}
+
 bool CalcEngine::processExpression(const QString expr, QString& str)
 {
     int first = str.indexOf(expr);
@@ -135,7 +163,7 @@ bool CalcEngine::processExpression(const QString expr, QString& str)
     intItem->isGrad = mDegRadMode;
     intItem->calc();
     qDebug() << "Replaced " << expr+midstr+")";
-    str = str.replace(expr+midstr+")", QString::number(intItem->value, 'fs', PRECISION));
+    str = str.replace(expr+midstr+")", QString::number(intItem->value, 'f', PRECISION));
     qDebug() << " to " << QString::number(intItem->value, 'f', PRECISION);
     delete intItem;
     return true;

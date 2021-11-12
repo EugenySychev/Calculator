@@ -8,6 +8,7 @@ struct CalcItem {
     QString lex{};
     double value{0.0};
     bool known{false};
+    bool isPerc{false};
     CalcItem* left{nullptr};
     CalcItem* right{nullptr};
     bool isGrad{false};
@@ -25,15 +26,14 @@ struct CalcItem {
             if (lex.contains("("))
                 lex.remove("(");
             if (right) {
-                if (lex == "*")
-                {
-                    value = left->value * right->value;
+                if (lex == "*") {
+                    value = left->value * (right->isPerc ? right->value / 100 : right->value);
                 } else if (lex == "/") {
-                    value = left->value / right->value;
+                    value = left->value / (right->isPerc ? right->value / 100 : right->value);
                 } else if (lex == "+") {
-                    value = left->value + right->value;
+                    value = left->value + (right->isPerc ? left->value * right->value / 100 : right->value);
                 } else if (lex == "-") {
-                    value = left->value - right->value;
+                    value = left->value - (right->isPerc ? left->value * right->value / 100 : right->value);
                 } else if (lex == "mod") {
                     value = (int)left->value % (int)right->value;
                 } else if (lex == "^") {
@@ -60,12 +60,10 @@ struct CalcItem {
             } else if (lex == "√") {
                 value = sqrt(left->value);
             } else if (lex == "!") {
-                double res = 0;
-                if (left->value == 0)
-                    res = 1;
-                else
-                    for (int i = 1; i < left->value; i++)
-                        res *= i;
+                double res = 1;
+
+                for (int i = 1; i <= left->value; i++)
+                    res *= i;
                 value = res;
             } else if (lex == "%") {
                 value = left->value / 100;
