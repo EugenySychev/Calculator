@@ -11,8 +11,8 @@ android {
         applicationId = "org.sychev.Calculator"
         minSdk = 32
 
-        versionCode = 5
-        versionName = "2.0.0"
+        versionCode = 7
+        versionName = "2.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -65,7 +65,16 @@ private fun PortraitLayout(
     onCursorMove: (Int) -> Unit,
     onDirectInput: (String, Int) -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                top = 30.dp,
+                start = 10.dp,
+                end = 10.dp,
+                bottom = 10.dp,
+            ),
+        ) {
         DisplayArea(
             state = state,
             onCursorMove = onCursorMove,
@@ -98,7 +107,13 @@ private fun LandscapeLayout(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(
+                top = 10.dp,
+                start = 20.dp,
+                end = 20.dp,
+                bottom = 10.dp,
+            ),
     ) {
         DisplayArea(
             state = state,
