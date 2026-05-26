@@ -70,13 +70,12 @@ private fun PortraitLayout(
             state = state,
             onCursorMove = onCursorMove,
             onDirectInput = onDirectInput,
-            onSciToggle = { onButtonClick("Sci") },
             modifier = Modifier.fillMaxWidth().weight(1f),
         )
         ButtonGrid(
             state = state,
             isLandscape = false,
-            showSciRows = state.isScientificMode,
+            showSciRows = false,
             onButtonClick = onButtonClick,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp),
         )
@@ -95,46 +94,29 @@ private fun LandscapeLayout(
     onCursorMove: (Int) -> Unit,
     onDirectInput: (String, Int) -> Unit,
 ) {
-    val leftWeight = if (state.isScientificMode) 0.50f else 0.38f
+    val leftWeight = 0.1f
 
-    Row(modifier = Modifier.fillMaxSize()) {
-        // Left column: display area (+ sci buttons when sci ON)
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        DisplayArea(
+            state = state,
+            onCursorMove = onCursorMove,
+            onDirectInput = onDirectInput,
             modifier = Modifier
-                .weight(leftWeight)
-                .fillMaxHeight(),
-        ) {
-            DisplayArea(
-                state = state,
-                onCursorMove = onCursorMove,
-                onDirectInput = onDirectInput,
-                onSciToggle = { onButtonClick("Sci") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(if (state.isScientificMode) 0.38f else 1f),
-            )
-            if (state.isScientificMode) {
-                SciBtnGrid(
-                    isDegMode = state.isDegMode,
-                    isLandscape = true,
-                    onButtonClick = onButtonClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(0.62f)
-                        .padding(start = 4.dp, bottom = 4.dp),
-                )
-            }
-        }
+                .fillMaxWidth()
+                .weight(0.4f),
+        )
 
-        // Right column: basic buttons always, fill height equally across 6 rows
         ButtonGrid(
             state = state,
             isLandscape = true,
-            showSciRows = false,
+            showSciRows = true,
             onButtonClick = onButtonClick,
             modifier = Modifier
                 .weight(1f - leftWeight)
-                .fillMaxHeight()
+                .fillMaxWidth()
                 .padding(end = 4.dp, bottom = 4.dp),
         )
     }
@@ -147,7 +129,6 @@ private fun DisplayArea(
     state: CalculatorState,
     onCursorMove: (Int) -> Unit,
     onDirectInput: (String, Int) -> Unit,
-    onSciToggle: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var tfv by remember {
@@ -170,13 +151,6 @@ private fun DisplayArea(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            TextButton(onClick = onSciToggle) {
-                Text(
-                    text = if (state.isScientificMode) "Basic" else "Sci",
-                    color = AccentBlue,
-                    fontSize = 15.sp,
-                )
-            }
             Text(
                 text = "M",
                 color = if (state.memoryEmpty) TextDisabled else TextPrimary,
@@ -229,41 +203,64 @@ private fun ButtonGrid(
     onButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Row(modifier = modifier) {
         if (showSciRows) {
             SciBtnGrid(
                 isDegMode = state.isDegMode,
                 isLandscape = isLandscape,
                 onButtonClick = onButtonClick,
+                modifier = Modifier.weight(1f),
             )
         }
-        CalcRow(isLandscape) {
-            listOf("MR", "MC", "M+", "M-").forEach { b ->
-                CalcBtn(b, SurfaceMem, isLandscape) { onButtonClick(b) }
+        Column(
+            modifier = Modifier.weight(1.5f),
+        ) {
+            CalcRow(isLandscape) {
+                listOf("MR", "MC", "M+", "M-").forEach { b ->
+                    CalcBtn(b, SurfaceMem, isLandscape) { onButtonClick(b) }
+                }
             }
-        }
-        CalcRow(isLandscape) {
-            listOf("(", ")", "←", "C").forEach { b ->
-                CalcBtn(b, SurfaceMem, isLandscape) { onButtonClick(b) }
+            CalcRow(isLandscape) {
+                listOf("(", ")", "←", "C").forEach { b ->
+                    CalcBtn(b, SurfaceMem, isLandscape) { onButtonClick(b) }
+                }
             }
-        }
-        CalcRow(isLandscape) {
-            listOf("7", "8", "9").forEach { b -> CalcBtn(b, SurfaceNum, isLandscape) { onButtonClick(b) } }
-            CalcBtn("/", AccentOrange, isLandscape) { onButtonClick("/") }
-        }
-        CalcRow(isLandscape) {
-            listOf("4", "5", "6").forEach { b -> CalcBtn(b, SurfaceNum, isLandscape) { onButtonClick(b) } }
-            CalcBtn("*", AccentOrange, isLandscape) { onButtonClick("*") }
-        }
-        CalcRow(isLandscape) {
-            listOf("1", "2", "3").forEach { b -> CalcBtn(b, SurfaceNum, isLandscape) { onButtonClick(b) } }
-            CalcBtn("-", AccentOrange, isLandscape) { onButtonClick("-") }
-        }
-        CalcRow(isLandscape) {
-            CalcBtn("0", SurfaceNum, isLandscape) { onButtonClick("0") }
-            CalcBtn(",", SurfaceNum, isLandscape) { onButtonClick(",") }
-            CalcBtn("=", AccentBlue, isLandscape) { onButtonClick("=") }
-            CalcBtn("+", AccentOrange, isLandscape) { onButtonClick("+") }
+            CalcRow(isLandscape) {
+                listOf("7", "8", "9").forEach { b ->
+                    CalcBtn(
+                        b,
+                        SurfaceNum,
+                        isLandscape
+                    ) { onButtonClick(b) }
+                }
+                CalcBtn("/", AccentOrange, isLandscape) { onButtonClick("/") }
+            }
+            CalcRow(isLandscape) {
+                listOf("4", "5", "6").forEach { b ->
+                    CalcBtn(
+                        b,
+                        SurfaceNum,
+                        isLandscape
+                    ) { onButtonClick(b) }
+                }
+                CalcBtn("*", AccentOrange, isLandscape) { onButtonClick("*") }
+            }
+            CalcRow(isLandscape) {
+                listOf("1", "2", "3").forEach { b ->
+                    CalcBtn(
+                        b,
+                        SurfaceNum,
+                        isLandscape
+                    ) { onButtonClick(b) }
+                }
+                CalcBtn("-", AccentOrange, isLandscape) { onButtonClick("-") }
+            }
+            CalcRow(isLandscape) {
+                CalcBtn("0", SurfaceNum, isLandscape) { onButtonClick("0") }
+                CalcBtn(",", SurfaceNum, isLandscape) { onButtonClick(",") }
+                CalcBtn("=", AccentBlue, isLandscape) { onButtonClick("=") }
+                CalcBtn("+", AccentOrange, isLandscape) { onButtonClick("+") }
+            }
         }
     }
 }
@@ -357,7 +354,7 @@ private fun PortraitPreview() {
 private fun LandscapePreview() {
     CalculatorTheme {
         CalculatorContent(
-            state = CalculatorState(expression = "2+2", result = "4"),
+            state = CalculatorState(expression = "2+2*2", result = "6"),
             onButtonClick = {}, onCursorMove = {}, onDirectInput = { _, _ -> },
         )
     }
